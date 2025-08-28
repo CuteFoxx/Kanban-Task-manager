@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Plus Jakarta";
+  src: url("/PlusJakartaSansVariable.woff2") format("woff2-variations");
+  font-weight: 300 900;
+
+  font-style: normal;
+}
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-purple: #635fc7;
+  --color-lavander: #a8a4ff;
+  --color-black: #000112;
+  --color-very-dark-grey: #20212c;
+  --color-dark-grey: #2b2c37;
+  --color-lines: #3e3f4e;
+  --color-lines-light: #e4ebfa;
+  --color-lines-grey: #f4f7fd;
+  --color-white: #ffffff;
+  --color-medium-grey: #828fa3;
+  --color-red: #ea5555;
+  --color-pale-red: #ff9898;
+
+  --color-background: white;
+  --color-background-dark: var(--color-dark-grey);
+
+  --text-heading-xl: 1.5rem;
+  --text-heading-xl--line-height: 1.25;
+  --text-heading-xl--font-weight: 700;
+
+  --text-heading-l: 1.125rem;
+  --text-heading-l--line-height: 1.277;
+  --text-heading-l--font-weight: 700;
+
+  --text-heading-m: 0.9375rem;
+  --text-heading-m--line-height: 1.2666;
+  --text-heading-m--font-weight: 700;
+
+  --text-heading-s: 0.75rem;
+  --text-heading-s--line-height: 1.25;
+  --text-heading-s--font-weight: 700;
+
+  --text-medium: 0.8125rem;
+  --text-medium--line-height: 1.777;
+  --text-medium--font-weight: 500;
+
+  --text-bold: 0.75rem;
+  --text-bold--line-height: 1.25;
+  --text-bold--font-weight: 700;
+}
+
+body {
+  font-family: "Plus Jakarta", sans-serif;
+
+  @apply bg-background dark:bg-background-dark dark:text-white text-black;
+}
+
+.modal {
+}

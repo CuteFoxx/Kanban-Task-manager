@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <Header />
-      <main className="relative">
+      <main className="relative md:flex">
         <SideBar />
         <Outlet />
       </main>

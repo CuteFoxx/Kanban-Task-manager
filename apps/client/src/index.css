@@ -15,7 +15,7 @@
   --color-black: #000112;
   --color-very-dark-grey: #20212c;
   --color-dark-grey: #2b2c37;
-  --color-lines: #3e3f4e;
+  --color-lines-dark: #3e3f4e;
   --color-lines-light: #e4ebfa;
   --color-lines-grey: #f4f7fd;
   --color-white: #ffffff;
@@ -23,8 +23,11 @@
   --color-red: #ea5555;
   --color-pale-red: #ff9898;
 
+  --color-main: var(--color-purple);
   --color-background: white;
+  --color-background-darkest: var(--color-lines-grey);
   --color-background-dark: var(--color-dark-grey);
+  --color-background-darkest-dark: var(--color-very-dark-grey);
 
   --text-heading-xl: 1.5rem;
   --text-heading-xl--line-height: 1.25;
@@ -49,12 +52,14 @@
   --text-bold: 0.75rem;
   --text-bold--line-height: 1.25;
   --text-bold--font-weight: 700;
+
+  --default-transition-duration: 300ms;
 }
 
 body {
   font-family: "Plus Jakarta", sans-serif;
 
-  @apply bg-background dark:bg-background-dark dark:text-white text-black;
+  @apply bg-background dark:bg-background-dark text-black dark:text-white;
 }
 
 .modal {

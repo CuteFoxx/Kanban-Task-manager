@@ -4,11 +4,15 @@ import type { theme } from "../types/theme";
 interface UserState {
   theme?: theme | null;
   isSideBarShown: boolean;
+  isSideBarMinimized: boolean;
 }
 
 const initialState: UserState = {
   theme: localStorage.getItem("theme") as theme,
   isSideBarShown: false,
+  isSideBarMinimized: JSON.parse(
+    localStorage.getItem("isSideBarMinimized") ?? "false",
+  ) as boolean,
 };
 
 export const appStateSlice = createSlice({
@@ -22,9 +26,17 @@ export const appStateSlice = createSlice({
     setIsSideBarShown: (state, action) => {
       state.isSideBarShown = action.payload as boolean;
     },
+    setIsSideBarMinimized: (state, action) => {
+      state.isSideBarMinimized = action.payload as boolean;
+      localStorage.setItem(
+        "isSideBarMinimized",
+        JSON.stringify(action.payload),
+      );
+    },
   },
 });
 
-export const { setTheme, setIsSideBarShown } = appStateSlice.actions;
+export const { setTheme, setIsSideBarShown, setIsSideBarMinimized } =
+  appStateSlice.actions;
 
 export default appStateSlice.reducer;

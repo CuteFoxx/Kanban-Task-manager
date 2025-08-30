@@ -1,15 +1,14 @@
-import { setTheme } from "../redux/appStateSlice";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { cn } from "../utils/utils";
-import Sun from "../assets/icon-light-theme.svg?react";
-import Moon from "../assets/icon-dark-theme.svg?react";
+import { setTheme } from "../../redux/appStateSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { cn } from "../../utils/utils";
+import Sun from "../../assets/icon-light-theme.svg?react";
+import Moon from "../../assets/icon-dark-theme.svg?react";
 
 const ThemeSwitch = ({ className }: { className?: string }) => {
   const theme = useAppSelector((root) => root.app.theme);
   const dispatch = useAppDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.checked);
     if (e.target.checked) {
       dispatch(setTheme("dark"));
       document.body.classList.remove("light");

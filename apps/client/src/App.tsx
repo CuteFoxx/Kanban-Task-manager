@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
-import Header from "./components/Header";
-import SideBar from "./components/SideBar";
+import Header from "./components/header/Header";
+import SideBar from "./components/sidebar/SideBar";
 
 function App() {
   return (
@@ -8,7 +8,9 @@ function App() {
       <Header />
       <main className="relative md:flex">
         <SideBar />
-        <Outlet />
+        <div className="flex-1 px-4 py-6 md:px-6">
+          <Outlet />
+        </div>
       </main>
     </>
   );

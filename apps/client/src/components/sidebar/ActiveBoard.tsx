@@ -1,7 +1,7 @@
-import { useIsMobile } from "../hooks/useIsMobile";
-import { setIsSideBarShown } from "../redux/appStateSlice";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-
+import { useIsMobile } from "../../hooks/useIsMobile";
+import { setIsSideBarShown } from "../../redux/appStateSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import ArrowDown from "../../assets/icon-chevron-down.svg?react";
 const ActiveBoard = () => {
   const isMobile = useIsMobile();
   return isMobile ? <CurrentProjectButton /> : <h2>Current Project</h2>;
@@ -18,13 +18,11 @@ function CurrentProjectButton() {
 
   return (
     <button
-      className="flex gap-2 items-center cursor-pointer"
+      className="flex cursor-pointer items-center gap-2"
       onClick={handleClick}
     >
       Current Project
-      <svg width="10" height="7" xmlns="http://www.w3.org/2000/svg">
-        <path stroke="#635FC7" strokeWidth="2" fill="none" d="m1 1 4 4 4-4" />
-      </svg>
+      <ArrowDown />
     </button>
   );
 }

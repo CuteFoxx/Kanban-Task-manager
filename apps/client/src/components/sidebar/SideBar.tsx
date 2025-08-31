@@ -1,6 +1,7 @@
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { useAppSelector } from "../../redux/hooks";
 import { cn } from "../../utils/utils";
+import BoardsList from "./BoardsList";
 import HideSideBar from "./HideSideBar";
 import ThemeSwitch from "./ThemeSwitch";
 
@@ -28,7 +29,7 @@ const SideBar = () => {
           ],
         )}
       >
-        <div>Sidebar</div>
+        <BoardsList />
         <div className="hide-sidebar">
           {!isSideBarMinimized && <ThemeSwitch />}
           <HideSideBar className="md:mt-7.5 md:pl-2.75" />

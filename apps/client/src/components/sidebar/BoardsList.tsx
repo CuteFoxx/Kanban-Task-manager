@@ -1,0 +1,40 @@
+import { NavLink } from "react-router";
+import { useAppSelector } from "../../redux/hooks";
+import LinkIcon from "../../assets/icon-board.svg?react";
+import { Modal, ModalContent, ModalTitle, ModalTrigger } from "../Modal";
+
+const BoardsList = () => {
+  const boards = useAppSelector((root) => root.board.boards);
+  return (
+    <section className="flex flex-col">
+      <h2 className="text-medium-grey text-medium mb-5">
+        All boards ({boards.length})
+      </h2>
+      <>
+        {boards?.map((board) => {
+          return (
+            <NavLink
+              className="[&.active]:bg-main text-heading-m text-medium-grey -ml-6 flex min-w-[15rem] gap-3 py-3.5 pl-6 transition-all duration-200 [&.active]:rounded-r-full [&.active]:text-white [&.active_path]:fill-white"
+              key={board.id}
+              to={`board/${board.id}`}
+            >
+              <LinkIcon />
+              {board.name}
+            </NavLink>
+          );
+        })}
+      </>
+      <Modal>
+        <ModalTrigger className="!text-main text-heading-m [&_path]:fill-main flex items-center gap-3 py-4">
+          <LinkIcon />
+          <span>+ Create New Board</span>
+        </ModalTrigger>
+        <ModalContent>
+          <ModalTitle>Title</ModalTitle>
+        </ModalContent>
+      </Modal>
+    </section>
+  );
+};
+
+export default BoardsList;

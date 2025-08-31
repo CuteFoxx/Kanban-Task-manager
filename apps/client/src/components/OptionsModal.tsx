@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import OptionsIcon from "../../assets/icon-vertical-ellipsis.svg?react";
+import OptionsIcon from "../assets/icon-vertical-ellipsis.svg?react";
 
 const OptionsModal = ({
   icon = <OptionsIcon />,

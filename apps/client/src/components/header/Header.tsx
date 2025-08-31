@@ -1,7 +1,7 @@
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { useAppSelector } from "../../redux/hooks";
 import { cn } from "../../utils/utils";
-import OptionsModalContent from "../optionsModal/OptionsModal";
+import OptionsModalContent from "../OptionsModal";
 import ActiveBoard from "../sidebar/ActiveBoard";
 import Logo from "./Logo";
 
@@ -11,7 +11,7 @@ const Header = () => {
     (root) => root.app.isSideBarMinimized,
   );
   return (
-    <header className="relative z-50 flex min-h-16 items-center gap-4 overflow-x-clip px-4 py-5 md:min-h-20.25 md:gap-0 md:!p-0 md:[&>*]:px-6 md:[&>*]:py-7">
+    <header className="relative z-20 flex min-h-16 items-center gap-4 overflow-x-clip px-4 py-5 md:min-h-20.25 md:gap-0 md:!p-0 md:[&>*]:px-6 md:[&>*]:py-7">
       <Logo className="md:border-lines-light dark:md:border-lines-dark md:min-w-[16.25rem] md:border-r" />
       <div
         className={cn(

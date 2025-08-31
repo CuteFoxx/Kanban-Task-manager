@@ -11,9 +11,9 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<App />} errorElement={<Error />}>
       <Route index element={<Board />} />
-      <Route path=":id" element={<Board />} />
-    </Route>
-  )
+      <Route path="board/:id" element={<Board />} />
+    </Route>,
+  ),
 );
 
 export default router;

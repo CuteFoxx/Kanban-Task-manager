@@ -59,7 +59,7 @@
 body {
   font-family: "Plus Jakarta", sans-serif;
 
-  @apply bg-background dark:bg-background-dark text-black dark:text-white;
+  @apply bg-background dark:bg-background-dark flex min-h-[100svh] flex-col text-black dark:text-white;
 }
 
 .modal {

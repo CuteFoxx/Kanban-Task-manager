@@ -14,6 +14,7 @@ function CurrentProjectButton({
 }: CurrentProjectButtonProps) {
   const dispatch = useAppDispatch();
   const isSideBarShown = useAppSelector((root) => root.app.isSideBarShown);
+  const currentProject = useAppSelector((root) => root.board.currentBoard);
   const handleClick = () => {
     dispatch(setIsSideBarShown(!isSideBarShown));
   };
@@ -21,10 +22,10 @@ function CurrentProjectButton({
   return (
     <button
       {...props}
-      className={cn("flex cursor-pointer items-center gap-2", className)}
+      className={cn("!flex cursor-pointer items-center gap-2", className)}
       onClick={handleClick}
     >
-      Current Project
+      <h2>{currentProject?.name ?? "Board not selected"}</h2>
       <ArrowDown />
     </button>
   );

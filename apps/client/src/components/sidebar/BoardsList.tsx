@@ -2,6 +2,7 @@ import { NavLink } from "react-router";
 import { useAppSelector } from "../../redux/hooks";
 import LinkIcon from "../../assets/icon-board.svg?react";
 import { Modal, ModalContent, ModalTitle, ModalTrigger } from "../Modal";
+import CreateBoardForm from "../board/CreateBoardForm";
 
 const BoardsList = () => {
   const boards = useAppSelector((root) => root.board.boards);
@@ -14,7 +15,7 @@ const BoardsList = () => {
         {boards?.map((board) => {
           return (
             <NavLink
-              className="[&.active]:bg-main text-heading-m text-medium-grey -ml-6 flex min-w-[15rem] gap-3 py-3.5 pl-6 transition-all duration-200 [&.active]:rounded-r-full [&.active]:text-white [&.active_path]:fill-white"
+              className="[&.active]:bg-main text-heading-m text-medium-grey -ml-6.5 flex min-w-[15rem] gap-3 py-3.5 pl-6 transition-all duration-200 [&.active]:rounded-r-full [&.active]:text-white [&.active_path]:fill-white"
               key={board.id}
               to={`board/${board.id}`}
             >
@@ -30,7 +31,8 @@ const BoardsList = () => {
           <span>+ Create New Board</span>
         </ModalTrigger>
         <ModalContent>
-          <ModalTitle>Title</ModalTitle>
+          <ModalTitle>Add New Board</ModalTitle>
+          <CreateBoardForm />
         </ModalContent>
       </Modal>
     </section>

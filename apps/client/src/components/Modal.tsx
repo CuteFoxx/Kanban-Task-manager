@@ -4,6 +4,7 @@ import {
   useEffect,
   useRef,
   useState,
+  type Dispatch,
   type SetStateAction,
 } from "react";
 import { cn } from "../utils/utils";
@@ -26,31 +27,30 @@ const useModalContext = () => {
   return context;
 };
 
-interface ModalProps<T = undefined> extends React.ButtonHTMLAttributes<T> {
+interface ModalProps<T = undefined> extends React.HTMLAttributes<T> {
   children?: React.ReactNode;
+  controls?: {
+    isOpen: boolean;
+    setIsOpen: Dispatch<SetStateAction<boolean>>;
+  };
 }
 
-export const Modal = ({ children }: ModalProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
+export const Modal = ({ children, controls }: ModalProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  let wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  return (
-    <ModalContext.Provider value={{ isOpen, setIsOpen, wrapperRef }}>
-      <div ref={wrapperRef}>{children}</div>
-    </ModalContext.Provider>
-  );
-};
+  const normalizedControls = {
+    isOpen: controls?.isOpen ?? isOpen,
+    setIsOpen: controls?.setIsOpen ?? setIsOpen,
+  };
 
-export const ModalTrigger = ({
-  children,
-  ...props
-}: ModalProps<HTMLDivElement>) => {
-  const { setIsOpen, wrapperRef } = useModalContext();
-  const { className, ...rest } = { ...props };
   const handleClickOutside = (e: PointerEvent) => {
-    const target = e.target as Node;
-    if (!wrapperRef.current?.contains(target)) {
-      setIsOpen(false);
+    const target = e.target as Element;
+
+    // Wasnt able figure out something better for nested modals at the moment
+    // would appreciate any tips and tricks
+    if (!wrapperRef.current?.contains(target) && !target.closest("dialog")) {
+      normalizedControls.setIsOpen(false);
     }
   };
 
@@ -61,6 +61,26 @@ export const ModalTrigger = ({
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  return (
+    <ModalContext.Provider
+      value={{
+        isOpen: controls?.isOpen != null ? controls.isOpen : isOpen,
+        setIsOpen: controls?.setIsOpen != null ? controls.setIsOpen : setIsOpen,
+        wrapperRef,
+      }}
+    >
+      <div ref={wrapperRef}>{children}</div>
+    </ModalContext.Provider>
+  );
+};
+
+export const ModalTrigger = ({
+  children,
+  ...props
+}: ModalProps<HTMLDivElement>) => {
+  const { setIsOpen } = useModalContext();
+  const { className, ...rest } = { ...props };
 
   return (
     <div
@@ -84,12 +104,12 @@ export const ModalContent = ({
     <dialog
       {...rest}
       className={cn(
-        "fixed inset-1/2 z-999 -translate-x-1/2 before:pointer-events-none before:absolute before:-z-1 before:h-screen before:w-screen before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black/50 before:content-['']",
+        "fixed top-1/2 right-4 z-999 w-screen before:pointer-events-none before:absolute before:-z-1 before:h-screen before:w-screen before:-translate-y-1/2 before:bg-black/50 before:content-['']",
         className,
       )}
       open={isOpen ?? false}
     >
-      <div className="dark:bg-dark-grey mdp-8 absolute z-99 rounded-[0.375rem] bg-white p-6 pb-8 text-black dark:text-white">
+      <div className="dark:bg-dark-grey xs:-translate-x-1/2 xs:left-1/2 fixed top-1/2 right-4 left-4 z-99 w-[calc(100vw-var(--spacing)*12)] max-w-[30rem] -translate-y-1/2 rounded-[0.375rem] bg-white p-6 pb-8 text-black md:p-8 dark:text-white">
         {children}
       </div>
     </dialog>

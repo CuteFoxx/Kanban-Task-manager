@@ -54,6 +54,8 @@
   --text-bold--font-weight: 700;
 
   --default-transition-duration: 300ms;
+
+  --breakpoint-xs: 25rem;
 }
 
 body {

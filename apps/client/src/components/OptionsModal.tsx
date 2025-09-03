@@ -38,7 +38,7 @@ const OptionsModal = forwardRef<HTMLDivElement, OptionsModalProps>(
       <div className="relative" ref={wrapperRef}>
         <button onClick={() => setIsOpen((prev) => !prev)}>{icon}</button>
         <dialog
-          className="bg-background dark:bg-background-darkest-dark absolute -translate-x-full rounded-[0.5rem] p-4 transition-all dark:text-white"
+          className="bg-background dark:bg-background-darkest-dark absolute -translate-x-full rounded-[0.5rem] p-4 shadow-sm transition-all dark:text-white"
           open={isOpen}
         >
           {children}

@@ -15,7 +15,7 @@ const BoardsList = () => {
         {boards?.map((board) => {
           return (
             <NavLink
-              className="[&.active]:bg-main text-heading-m text-medium-grey -ml-6.5 flex min-w-[15rem] gap-3 py-3.5 pl-6 transition-all duration-200 [&.active]:rounded-r-full [&.active]:text-white [&.active_path]:fill-white"
+              className="[&.active]:bg-main text-heading-m text-medium-grey hover:bg-lavander/20 hover:text-main hover:[&_path]:fill-main -ml-6.5 flex min-w-[15rem] gap-3 rounded-r-full py-3.5 pl-6 transition-all duration-200 dark:hover:bg-white [&.active]:text-white [&.active_path]:fill-white"
               key={board.id}
               to={`board/${board.id}`}
             >
@@ -26,7 +26,7 @@ const BoardsList = () => {
         })}
       </>
       <Modal>
-        <ModalTrigger className="!text-main text-heading-m [&_path]:fill-main flex items-center gap-3 py-4">
+        <ModalTrigger className="!text-main text-heading-m [&_path]:fill-main -ml-6.5 flex items-center gap-3 rounded-r-full py-4 pl-6 hover:bg-lavander/20 dark:hover:bg-white">
           <LinkIcon />
           <span>+ Create New Board</span>
         </ModalTrigger>

@@ -47,8 +47,10 @@ export const Modal = ({ children, controls }: ModalProps) => {
   const handleClickOutside = (e: PointerEvent) => {
     const target = e.target as Element;
 
-    // Wasnt able figure out something better for nested modals at the moment
-    // would appreciate any tips and tricks
+    if (target.closest("[data-ignore-outside]")) {
+      return;
+    }
+
     if (!wrapperRef.current?.contains(target) && !target.closest("dialog")) {
       normalizedControls.setIsOpen(false);
     }

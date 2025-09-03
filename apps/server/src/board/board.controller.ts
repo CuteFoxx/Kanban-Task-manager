@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CreateBoardDto } from './dtos/create-borad.dto';
+import { CreateBoardDto } from './dtos/create-board.dto';
 import { BoardService } from './board.service';
 import { UpdateBoardDto } from './dtos/update-board.dto';
 

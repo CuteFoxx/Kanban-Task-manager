@@ -1,5 +1,5 @@
-import { cn } from "../../utils/utils";
 import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "../../utils/utils";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
 }
@@ -9,7 +9,7 @@ const button = cva(
   {
     variants: {
       intent: {
-        primary: ["bg-main", "hover:bg-lavander", "dark:bg-main"],
+        primary: ["bg-main", "hover:bg-lavander", "dark:bg-main text-white"],
         light: ["text-main", "bg-main/10", "dark:bg-white"],
         danger: ["bg-red", "dark:bg-red"],
       },
@@ -27,7 +27,7 @@ const Button = ({ children, intent, ...props }: ButtonProps) => {
   const { className, ...rest } = { ...props };
 
   return (
-    <button {...rest} className={button({ intent, className })}>
+    <button {...rest} className={cn(button({ intent }), className)}>
       {children ? children : "Submit"}
     </button>
   );

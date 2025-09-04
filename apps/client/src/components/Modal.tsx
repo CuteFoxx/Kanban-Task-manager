@@ -51,6 +51,8 @@ export const Modal = ({ children, controls }: ModalProps) => {
       return;
     }
 
+    // Wasnt able figure out something better for nested modals at the moment
+    // would appreciate any tips and tricks
     if (!wrapperRef.current?.contains(target) && !target.closest("dialog")) {
       normalizedControls.setIsOpen(false);
     }

@@ -33,6 +33,8 @@ export class BoardService {
   }
 
   async find() {
-    return await this.boardRepo.find();
+    return await this.boardRepo.find({
+      relations: ['columns'],
+    });
   }
 }

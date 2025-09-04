@@ -8,8 +8,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { setBoards } from "../../redux/boardSlice";
+import { setBoards, setCurrentBoard } from "../../redux/boardSlice";
 import RemoveIcon from "../../assets/icon-cross.svg?react";
+import { useEffect } from "react";
 const schema = z.object({
   name: z.string().min(3, { message: "min 3 chars long" }),
   columns: z.array(
@@ -21,7 +22,13 @@ const schema = z.object({
 
 type FormFileds = z.infer<typeof schema>;
 
-const CreateBoardForm = () => {
+const BoardForm = ({
+  defaultValues,
+  action = "POST",
+}: {
+  defaultValues?: FormFileds;
+  action?: "POST" | "UPDATE";
+}) => {
   const {
     register,
     handleSubmit,
@@ -29,13 +36,17 @@ const CreateBoardForm = () => {
     reset,
     control,
   } = useForm<FormFileds>({
-    defaultValues: {
-      columns: [{ name: "" }],
-    },
+    defaultValues:
+      defaultValues != null
+        ? defaultValues
+        : {
+            columns: [{ name: "" }],
+          },
     resolver: zodResolver(schema),
   });
   const boards = useAppSelector((root) => root.board.boards);
   const dispatch = useAppDispatch();
+  const currentBoard = useAppSelector((root) => root.board.currentBoard);
 
   const { fields, append, remove } = useFieldArray({
     name: "columns",
@@ -43,16 +54,34 @@ const CreateBoardForm = () => {
   });
 
   const onSubmit: SubmitHandler<FormFileds> = (data) => {
-    axios.post("board", data).then((res) => {
-      if (res.data != null) {
-        dispatch(setBoards([...boards, res.data]));
-        reset();
-      }
-    });
+    switch (action) {
+      case "POST":
+        axios.post("board", data).then((res) => {
+          if (res.data != null) {
+            dispatch(setBoards([...boards, res.data]));
+            reset();
+          }
+        });
+        break;
+      case "UPDATE":
+        axios.patch(`board/${currentBoard?.id ?? -1}`, data).then((res) => {
+          if (res.data != null) {
+            dispatch(setCurrentBoard(res.data));
+            reset();
+          }
+        });
+        break;
+    }
   };
 
+  useEffect(() => {
+    if (defaultValues) {
+      reset(defaultValues);
+    }
+  }, [defaultValues, reset]);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <FormItem>
         <Label>Board Name</Label>
         <Input
@@ -96,9 +125,9 @@ const CreateBoardForm = () => {
           </Button>
         </div>
       </FormItem>
-      <Button>Create New Board</Button>
+      <Button>{action == "POST" ? "Create New Board" : "Save Changes"}</Button>
     </form>
   );
 };
 
-export default CreateBoardForm;
+export default BoardForm;

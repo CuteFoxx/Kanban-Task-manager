@@ -7,6 +7,9 @@ import { useRef, useState } from "react";
 import DeleteBoardModal from "./DeleteBoardModal";
 import { useAppSelector } from "../../redux/hooks";
 import EditBoardModal from "./EditBoardModal";
+import Button from "../form/Button";
+import AddIcon from "../../assets/icon-add-task-mobile.svg?react";
+import AddTaskModal from "./AddTaskModal";
 
 const Header = () => {
   const isMobile = useIsMobile();
@@ -15,7 +18,9 @@ const Header = () => {
   );
   const [isDeleteBoardOpen, setIsDeleteBoardOpen] = useState<boolean>(false);
   const [isEditBoardOpen, setIsEditBoardOpen] = useState<boolean>(false);
+  const [isAddTaskOpen, setIsAddTaskOpen] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
+  const addTaskRef = useRef<HTMLButtonElement>(null);
 
   return (
     <>
@@ -23,7 +28,7 @@ const Header = () => {
         <Logo className="md:border-lines-light dark:md:border-lines-dark md:min-w-[16.25rem] md:border-r" />
         <div
           className={cn(
-            "relative flex w-full transition-all",
+            "relative flex w-full items-center gap-6 transition-all",
             [
               !isMobile &&
                 "before:bg-lines-light dark:before:bg-lines-dark h-full before:absolute before:bottom-0 before:left-0 before:h-[0.0625rem] before:w-[calc(100vw-16.25rem)] before:content-['']",
@@ -36,10 +41,17 @@ const Header = () => {
           )}
         >
           <ActiveBoard className="mr-auto block" />
+          <Button
+            ref={addTaskRef}
+            onClick={() => setIsAddTaskOpen(true)}
+            className="mt-0 w-fit px-4.5 py-2.5"
+          >
+            {isMobile ? <AddIcon /> : "+ Add New Task"}
+          </Button>
           <OptionsModalContent ref={ref}>
             <button
               onClick={() => setIsEditBoardOpen(!isEditBoardOpen)}
-              className="text-medium text-medium-grey"
+              className="text-medium text-medium-grey cursor-pointer"
             >
               Edit
             </button>
@@ -47,7 +59,7 @@ const Header = () => {
               onClick={() => {
                 setIsDeleteBoardOpen(!isDeleteBoardOpen);
               }}
-              className="text-red text-medium"
+              className="text-red text-medium cursor-pointer"
             >
               Delete
             </button>
@@ -59,6 +71,11 @@ const Header = () => {
         isOpen={isDeleteBoardOpen}
       />
       <EditBoardModal isOpen={isEditBoardOpen} setIsOpen={setIsEditBoardOpen} />
+      <AddTaskModal
+        triggerElement={addTaskRef}
+        isOpen={isAddTaskOpen}
+        setIsOpen={setIsAddTaskOpen}
+      />
     </>
   );
 };

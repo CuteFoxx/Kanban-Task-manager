@@ -33,9 +33,10 @@ interface ModalProps<T = undefined> extends React.HTMLAttributes<T> {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
   };
+  triggerElement?: React.RefObject<HTMLElement | null>;
 }
 
-export const Modal = ({ children, controls }: ModalProps) => {
+export const Modal = ({ children, controls, triggerElement }: ModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   let wrapperRef = useRef<HTMLDivElement | null>(null);
 
@@ -48,6 +49,10 @@ export const Modal = ({ children, controls }: ModalProps) => {
     const target = e.target as Element;
 
     if (target.closest("[data-ignore-outside]")) {
+      return;
+    }
+
+    if (triggerElement != null && target == triggerElement.current) {
       return;
     }
 
@@ -64,7 +69,7 @@ export const Modal = ({ children, controls }: ModalProps) => {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  });
 
   return (
     <ModalContext.Provider

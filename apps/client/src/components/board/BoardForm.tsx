@@ -103,15 +103,14 @@ const BoardForm = ({
                   type="text"
                   {...register(`columns.${index}.name`)}
                 />
-                {index > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => remove(index)}
-                    data-ignore-outside
-                  >
-                    <RemoveIcon />
-                  </button>
-                )}
+
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  data-ignore-outside
+                >
+                  <RemoveIcon />
+                </button>
               </div>
             );
           })}

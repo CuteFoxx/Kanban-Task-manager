@@ -21,13 +21,15 @@ const button = cva(
 );
 interface ButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "disabled">,
-    VariantProps<typeof button> {}
+    VariantProps<typeof button> {
+  ref?: React.RefObject<HTMLButtonElement | null>;
+}
 
-const Button = ({ children, intent, ...props }: ButtonProps) => {
+const Button = ({ children, intent, ref, ...props }: ButtonProps) => {
   const { className, ...rest } = { ...props };
 
   return (
-    <button {...rest} className={cn(button({ intent }), className)}>
+    <button ref={ref} {...rest} className={cn(button({ intent }), className)}>
       {children ? children : "Submit"}
     </button>
   );

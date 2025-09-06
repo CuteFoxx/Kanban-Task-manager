@@ -1,10 +1,6 @@
 import type { SetStateAction } from "react";
 import { Modal, ModalContent, ModalTitle } from "../Modal";
-import Button from "../form/Button";
-import axios from "axios";
-import { setBoards } from "../../redux/boardSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { useParams } from "react-router";
+import { useAppSelector } from "../../redux/hooks";
 import BoardForm from "../board/BoardForm";
 
 const EditBoardModal = ({

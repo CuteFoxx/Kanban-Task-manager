@@ -3,14 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
 import { CreateBoardDto } from './dtos/create-board.dto';
 import { Repository } from 'typeorm';
-import { Column as BoardColumn } from 'src/column/column.entity';
 
 @Injectable()
 export class BoardService {
-  constructor(
-    @InjectRepository(Board) private boardRepo: Repository<Board>,
-    @InjectRepository(BoardColumn) private columnRepo: Repository<BoardColumn>,
-  ) {}
+  constructor(@InjectRepository(Board) private boardRepo: Repository<Board>) {}
 
   async create(boardDto: CreateBoardDto) {
     const board = this.boardRepo.create(boardDto);

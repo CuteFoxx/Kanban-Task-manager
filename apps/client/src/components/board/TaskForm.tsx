@@ -16,6 +16,7 @@ import FormError from "../form/FormError";
 import Select from "../form/Select";
 import { useAppSelector } from "../../redux/hooks";
 import RemoveIcon from "../../assets/icon-cross.svg?react";
+import axios from "axios";
 
 const schema = z.object({
   title: z.string().min(3, { message: "min 3 chars long" }),
@@ -30,7 +31,13 @@ const schema = z.object({
 
 type FormFileds = z.infer<typeof schema>;
 
-const TaskForm = () => {
+const TaskForm = ({
+  defaultValues,
+  action = "POST",
+}: {
+  defaultValues?: FormFileds;
+  action?: "POST" | "UPDATE";
+}) => {
   const [options, setOptions] = useState<{ label: string; value: string }[]>();
 
   const {
@@ -54,6 +61,18 @@ const TaskForm = () => {
   const formRef = useRef(null);
   const onSubmit: SubmitHandler<FormFileds> = (data) => {
     console.log(data);
+
+    switch (action) {
+      case "POST":
+        axios
+          .post("task", { ...data, columnId: parseInt(data.status) })
+          .then((res) => {
+            if (res.data != null) {
+              reset();
+            }
+          });
+        break;
+    }
   };
 
   const { fields, append, remove } = useFieldArray({

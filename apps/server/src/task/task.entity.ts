@@ -1,5 +1,12 @@
 import { Column as BoardColumn } from 'src/column/column.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Subtask } from 'src/subtask/subtask.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Task {
@@ -16,4 +23,7 @@ export class Task {
     onDelete: 'CASCADE',
   })
   column: BoardColumn;
+
+  @OneToMany(() => Subtask, (subtask) => subtask.task, { cascade: true })
+  subtasks: Subtask[];
 }

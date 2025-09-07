@@ -1,6 +1,18 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { TaskService } from './task.service';
+import { UpdateTaskDto } from './dtos/update-task.dto';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { TaskDto } from './dtos/task.dto';
 
 @Controller('task')
 export class TaskController {
@@ -10,8 +22,25 @@ export class TaskController {
     return this.taskService.create(data);
   }
 
+  @Get(':id')
+  get(@Param('id') id: string) {
+    return this.taskService.findOne(parseInt(id));
+  }
+
   @Get()
-  findByColumn(@Query('column') columnId: string) {
-    return this.taskService.findByColumn(parseInt(columnId));
+  @Serialize(TaskDto)
+  find(@Query('column') columnId?: string, @Query('board') boardId?: string) {
+    if (columnId) {
+      return this.taskService.findByColumn(parseInt(columnId));
+    }
+    if (boardId) {
+      return this.taskService.findByBoard(parseInt(boardId));
+    }
+    throw new BadRequestException('Either column or board must be provided');
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() data: UpdateTaskDto) {
+    return this.taskService.update(data, parseInt(id));
   }
 }

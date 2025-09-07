@@ -8,6 +8,7 @@ import { Task } from './task.entity';
 import { Repository } from 'typeorm';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { Column } from 'src/column/column.entity';
+import { UpdateTaskDto } from './dtos/update-task.dto';
 @Injectable()
 export class TaskService {
   constructor(
@@ -33,6 +34,43 @@ export class TaskService {
       where: { column: { id: columnId } },
       relations: {
         column: true,
+      },
+    });
+  }
+
+  async findOne(id: number) {
+    return this.taskRepo.findOneBy({ id });
+  }
+
+  async update(data: UpdateTaskDto, id: number) {
+    const task = await this.taskRepo.findOneBy({ id });
+
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
+
+    Object.assign(task, data);
+
+    if (data.columnId) {
+      task.column = { id: data.columnId } as Column;
+    }
+
+    return await this.taskRepo.save(task);
+  }
+
+  async findByBoard(boardId: number) {
+    return this.taskRepo.find({
+      relations: {
+        column: {
+          board: true,
+        },
+      },
+      where: {
+        column: {
+          board: {
+            id: boardId,
+          },
+        },
       },
     });
   }

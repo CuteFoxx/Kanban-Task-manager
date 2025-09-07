@@ -60,8 +60,6 @@ const TaskForm = ({
   const currentBoard = useAppSelector((root) => root.board.currentBoard);
   const formRef = useRef(null);
   const onSubmit: SubmitHandler<FormFileds> = (data) => {
-    console.log(data);
-
     switch (action) {
       case "POST":
         axios

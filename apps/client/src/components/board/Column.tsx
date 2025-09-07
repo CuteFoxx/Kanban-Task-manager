@@ -21,9 +21,14 @@ const Column = ({ column }: { column: ColumnType }) => {
   }, [tasksData]);
 
   return (
-    <div ref={setNodeRef} className="column min-w-70" key={column.id}>
-      <h3 className="text-heading-s text-medium-grey mb-6 uppercase">
+    <div
+      ref={setNodeRef}
+      className="column group min-w-70 [&:nth-child(2n)>h3]:before:bg-[#8471F2] [&:nth-child(3n)>h3]:before:bg-[#67E2AE]"
+      key={column.id}
+    >
+      <h3 className="text-heading-s text-medium-grey mb-6 flex gap-3 uppercase before:block before:h-3.75 before:w-3.75 before:rounded-full before:bg-[#49C4E5] before:content-['']">
         {column.name}
+        <span>({tasks?.length})</span>
       </h3>
       <div className="flex flex-col gap-5">
         {tasks?.map((task) => (

@@ -38,7 +38,9 @@ const Select: React.FC<SelectProps> = ({ value, onChange, options }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="border-medium-grey/30 outline-main flex w-full items-center justify-between rounded-[0.25rem] border-1 px-4 py-2 text-left focus-within:outline-1 focus-within:[&>*]:rotate-180"
       >
-        {selected ? selected.label : options[0].label}
+        {/* {selected != null && options ? selected.label : options[0].label} */}
+        {selected != null ? selected.label : options[0]?.label}
+        {(options[0]?.label && selected == null) || "- No columns -"}
         <span className="transition-all">
           <ChevronDown />
         </span>

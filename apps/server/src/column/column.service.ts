@@ -3,6 +3,7 @@ import { CreateColumnDto } from './dtos/create-column-dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Column } from './column.entity';
 import { Repository } from 'typeorm';
+import { Board } from 'src/board/board.entity';
 
 @Injectable()
 export class ColumnService {
@@ -12,6 +13,11 @@ export class ColumnService {
 
   async create(data: CreateColumnDto) {
     const column = this.columnRepo.create(data);
+
+    if (data.boardId) {
+      column.board = { id: data.boardId } as Board;
+    }
+
     return await this.columnRepo.save(column);
   }
 }

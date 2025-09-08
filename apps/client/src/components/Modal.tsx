@@ -36,7 +36,12 @@ interface ModalProps<T = undefined> extends React.HTMLAttributes<T> {
   triggerElement?: React.RefObject<HTMLElement | null>;
 }
 
-export const Modal = ({ children, controls, triggerElement }: ModalProps) => {
+export const Modal = ({
+  children,
+  controls,
+  triggerElement,
+  ...rest
+}: ModalProps<HTMLDivElement>) => {
   const [isOpen, setIsOpen] = useState(false);
   let wrapperRef = useRef<HTMLDivElement | null>(null);
 
@@ -79,7 +84,9 @@ export const Modal = ({ children, controls, triggerElement }: ModalProps) => {
         wrapperRef,
       }}
     >
-      <div ref={wrapperRef}>{children}</div>
+      <div ref={wrapperRef} {...rest}>
+        {children}
+      </div>
     </ModalContext.Provider>
   );
 };

@@ -1,5 +1,7 @@
-import { Expose, Transform } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import { Column } from 'src/column/column.entity';
+import { SubTaskDto } from 'src/subtask/dtos/subtask.dto';
+import { Subtask } from 'src/subtask/subtask.entity';
 
 export class TaskDto {
   @Expose()
@@ -14,4 +16,8 @@ export class TaskDto {
   @Expose()
   @Transform(({ obj }: { obj: { column: Column } }) => obj.column.id)
   columnId: number;
+
+  @Expose()
+  @Type(() => SubTaskDto)
+  subTasks: Subtask[];
 }

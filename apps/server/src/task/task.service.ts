@@ -34,6 +34,7 @@ export class TaskService {
       where: { column: { id: columnId } },
       relations: {
         column: true,
+        subTasks: true,
       },
     });
   }
@@ -59,11 +60,12 @@ export class TaskService {
   }
 
   async findByBoard(boardId: number) {
-    return this.taskRepo.find({
+    const tasks = await this.taskRepo.find({
       relations: {
         column: {
           board: true,
         },
+        subTasks: true,
       },
       where: {
         column: {
@@ -73,5 +75,6 @@ export class TaskService {
         },
       },
     });
+    return tasks;
   }
 }

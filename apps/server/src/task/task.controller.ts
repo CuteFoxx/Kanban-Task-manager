@@ -29,12 +29,15 @@ export class TaskController {
 
   @Get()
   @Serialize(TaskDto)
-  find(@Query('column') columnId?: string, @Query('board') boardId?: string) {
+  async find(
+    @Query('column') columnId?: string,
+    @Query('board') boardId?: string,
+  ) {
     if (columnId) {
-      return this.taskService.findByColumn(parseInt(columnId));
+      return await this.taskService.findByColumn(parseInt(columnId));
     }
     if (boardId) {
-      return this.taskService.findByBoard(parseInt(boardId));
+      return await this.taskService.findByBoard(parseInt(boardId));
     }
     throw new BadRequestException('Either column or board must be provided');
   }

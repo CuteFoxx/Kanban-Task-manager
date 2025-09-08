@@ -25,5 +25,5 @@ export class Task {
   column: BoardColumn;
 
   @OneToMany(() => Subtask, (subtask) => subtask.task, { cascade: true })
-  subtasks: Subtask[];
+  subTasks: Subtask[];
 }

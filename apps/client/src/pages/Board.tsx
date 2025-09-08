@@ -7,7 +7,12 @@ import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 import type { Task } from "../types/task";
 import axios from "axios";
 import Button from "../components/form/Button";
-import { Modal, ModalContent, ModalTitle } from "../components/Modal";
+import {
+  Modal,
+  ModalContent,
+  ModalTitle,
+  ModalTrigger,
+} from "../components/Modal";
 import AddColumnForm from "../components/board/AddColumnForm";
 
 export const TasksContext = createContext<Task[] | null>([]);
@@ -110,12 +115,21 @@ const Board = () => {
 
   return (
     <TasksContext.Provider value={tasks}>
-      <div className="flex gap-6">
+      <div className="flex h-full gap-6">
         <DndContext onDragEnd={handleDragEnd}>
           {currentBoard?.columns?.map((column) => (
             <Column key={column.id} column={column} />
           ))}
         </DndContext>
+        <Modal className="min-w-70">
+          <ModalTrigger className="bg-medium-grey dark:bg-very-dark-grey/9 text-medium-grey text-heading-xl hover:text-main flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-[0.375rem] transition-all">
+            <button>+ New Column</button>
+          </ModalTrigger>
+          <ModalContent>
+            <ModalTitle>Add new column</ModalTitle>
+            <AddColumnForm />
+          </ModalContent>
+        </Modal>
       </div>
     </TasksContext.Provider>
   );

@@ -1,4 +1,10 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useEffect,
+  useRef,
+  useState,
+  type Dispatch,
+} from "react";
 import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setCurrentBoard } from "../redux/boardSlice";
@@ -15,7 +21,13 @@ import {
 } from "../components/Modal";
 import AddColumnForm from "../components/board/AddColumnForm";
 
-export const TasksContext = createContext<Task[] | null>([]);
+interface TasksContextType {
+  tasks: Task[] | null;
+  setTasks: React.Dispatch<React.SetStateAction<Task[] | null>>;
+}
+export const TasksContext = createContext<TasksContextType>(
+  {} as TasksContextType,
+);
 
 const Board = () => {
   const dispatch = useAppDispatch();
@@ -60,6 +72,11 @@ const Board = () => {
 
     const taskId = active.id as number;
     const newStatus = over.id as Task["columnId"];
+    const draggedTask = tasks?.find((item) => item.id == taskId);
+
+    if (draggedTask?.columnId == newStatus) {
+      return;
+    }
 
     const task = await axios
       .get(`task/${taskId}`)
@@ -114,7 +131,7 @@ const Board = () => {
   }
 
   return (
-    <TasksContext.Provider value={tasks}>
+    <TasksContext.Provider value={{ tasks, setTasks }}>
       <div className="flex h-full gap-6">
         <DndContext onDragEnd={handleDragEnd}>
           {currentBoard?.columns?.map((column) => (
@@ -122,7 +139,7 @@ const Board = () => {
           ))}
         </DndContext>
         <Modal className="min-w-70">
-          <ModalTrigger className="bg-medium-grey dark:bg-very-dark-grey/9 text-medium-grey text-heading-xl hover:text-main flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-[0.375rem] transition-all">
+          <ModalTrigger className="dark:bg-very-dark-grey/9 !text-medium-grey text-heading-xl hover:!text-main flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-[0.375rem] bg-[#E9EFFA]/30 transition-all">
             <button>+ New Column</button>
           </ModalTrigger>
           <ModalContent>

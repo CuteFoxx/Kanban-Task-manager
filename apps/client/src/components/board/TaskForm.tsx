@@ -13,7 +13,7 @@ import Input from "../form/Input";
 import Button from "../form/Button";
 import TextArea from "../form/TextArea";
 import FormError from "../form/FormError";
-import Select from "../form/Select";
+import Select, { type Option } from "../form/Select";
 import { useAppSelector } from "../../redux/hooks";
 import RemoveIcon from "../../assets/icon-cross.svg?react";
 import axios from "axios";
@@ -38,7 +38,7 @@ const TaskForm = ({
   defaultValues?: FormFileds;
   action?: "POST" | "UPDATE";
 }) => {
-  const [options, setOptions] = useState<{ label: string; value: string }[]>();
+  const [options, setOptions] = useState<Option[]>();
 
   const {
     register,

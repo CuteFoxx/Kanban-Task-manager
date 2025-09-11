@@ -1,24 +1,23 @@
-import { useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { type Column as ColumnType } from "../../types/column";
 import type { Task as TaskType } from "../../types/task";
 import Task from "./Task";
 import { useDroppable } from "@dnd-kit/core";
 import { TasksContext } from "../../pages/Board";
+export const TaskContext = createContext<TaskType | null>({} as TaskType);
 
 const Column = ({ column }: { column: ColumnType }) => {
-  const [tasks, setTasks] = useState<TaskType[] | null>(null);
+  const [filteredTasks, setFilteredTasks] = useState<TaskType[] | null>(null);
   const { setNodeRef } = useDroppable({ id: column.id });
-  const tasksData = useContext(TasksContext);
+  const { tasks } = useContext(TasksContext);
 
   useEffect(() => {
-    const filteredTasks = tasksData?.filter(
-      (task) => task.columnId === column.id,
-    );
+    const filtered = tasks?.filter((task) => task.columnId === column.id);
 
-    if (filteredTasks != null) {
-      setTasks(filteredTasks);
+    if (filtered != null) {
+      setFilteredTasks(filtered);
     }
-  }, [tasksData]);
+  }, [tasks]);
 
   return (
     <div
@@ -31,8 +30,8 @@ const Column = ({ column }: { column: ColumnType }) => {
         <span>({tasks?.length})</span>
       </h3>
       <div className="flex flex-col gap-5">
-        {tasks?.map((task) => (
-          <Task task={task} />
+        {filteredTasks?.map((task) => (
+          <Task key={task.id} task={task} />
         ))}
       </div>
     </div>

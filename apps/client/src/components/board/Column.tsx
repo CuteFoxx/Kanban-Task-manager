@@ -3,7 +3,7 @@ import { type Column as ColumnType } from "../../types/column";
 import type { Task as TaskType } from "../../types/task";
 import Task from "./Task";
 import { useDroppable } from "@dnd-kit/core";
-import { TasksContext } from "../../pages/Board";
+import { TasksContext } from "../../App";
 export const TaskContext = createContext<TaskType | null>({} as TaskType);
 
 const Column = ({ column }: { column: ColumnType }) => {

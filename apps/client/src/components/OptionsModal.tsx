@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import OptionsIcon from "../assets/icon-vertical-ellipsis.svg?react";
+import { cn } from "../utils/utils";
 
 interface OptionsModalProps {
   icon?: React.ReactElement;
@@ -40,7 +41,10 @@ const OptionsModal = forwardRef<HTMLDivElement, OptionsModalProps>(
           {icon}
         </button>
         <dialog
-          className="bg-background dark:bg-background-darkest-dark absolute -translate-x-full rounded-[0.5rem] p-4 shadow-sm transition-all dark:text-white"
+          className={cn(
+            "bg-background dark:bg-background-darkest-dark text-medium absolute w-max max-w-3xs -translate-x-full rounded-[0.5rem] p-4 shadow-sm transition-all dark:text-white",
+            isOpen && "flex flex-col items-start gap-2",
+          )}
           open={isOpen}
         >
           {children}

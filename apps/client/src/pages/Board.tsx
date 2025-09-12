@@ -1,5 +1,6 @@
 import {
   createContext,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -20,23 +21,16 @@ import {
   ModalTrigger,
 } from "../components/Modal";
 import AddColumnForm from "../components/board/AddColumnForm";
-
-interface TasksContextType {
-  tasks: Task[] | null;
-  setTasks: React.Dispatch<React.SetStateAction<Task[] | null>>;
-}
-export const TasksContext = createContext<TasksContextType>(
-  {} as TasksContextType,
-);
+import { TasksContext } from "../App";
 
 const Board = () => {
   const dispatch = useAppDispatch();
   const boards = useAppSelector((root) => root.board.boards);
   const currentBoard = useAppSelector((root) => root.board.currentBoard);
-  const [tasks, setTasks] = useState<Task[] | null>(null);
   const [isAddColumnOpen, setIsAddColumnOpen] = useState(false);
   const tirggerButtonRef = useRef(null);
   const { id } = useParams();
+  const { tasks, setTasks } = useContext(TasksContext);
 
   useEffect(() => {
     if (currentBoard?.id != null) {
@@ -131,24 +125,22 @@ const Board = () => {
   }
 
   return (
-    <TasksContext.Provider value={{ tasks, setTasks }}>
-      <div className="flex h-full gap-6">
-        <DndContext onDragEnd={handleDragEnd}>
-          {currentBoard?.columns?.map((column) => (
-            <Column key={column.id} column={column} />
-          ))}
-        </DndContext>
-        <Modal className="min-w-70">
-          <ModalTrigger className="dark:bg-very-dark-grey/9 !text-medium-grey text-heading-xl hover:!text-main flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-[0.375rem] bg-[#E9EFFA]/30 transition-all">
-            <button>+ New Column</button>
-          </ModalTrigger>
-          <ModalContent>
-            <ModalTitle>Add new column</ModalTitle>
-            <AddColumnForm />
-          </ModalContent>
-        </Modal>
-      </div>
-    </TasksContext.Provider>
+    <div className="flex h-full gap-6">
+      <DndContext onDragEnd={handleDragEnd}>
+        {currentBoard?.columns?.map((column) => (
+          <Column key={column.id} column={column} />
+        ))}
+      </DndContext>
+      <Modal className="min-w-70">
+        <ModalTrigger className="dark:bg-very-dark-grey/9 !text-medium-grey text-heading-xl hover:!text-main flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-[0.375rem] bg-[#E9EFFA]/30 transition-all">
+          <button>+ New Column</button>
+        </ModalTrigger>
+        <ModalContent>
+          <ModalTitle>Add new column</ModalTitle>
+          <AddColumnForm />
+        </ModalContent>
+      </Modal>
+    </div>
   );
 };
 

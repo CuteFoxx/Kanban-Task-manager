@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -18,6 +19,7 @@ import { TaskDto } from './dtos/task.dto';
 export class TaskController {
   constructor(private taskService: TaskService) {}
   @Post()
+  @Serialize(TaskDto)
   create(@Body() data: CreateTaskDto) {
     return this.taskService.create(data);
   }
@@ -43,7 +45,12 @@ export class TaskController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() data: UpdateTaskDto) {
-    return this.taskService.update(data, parseInt(id));
+  async update(@Param('id') id: string, @Body() data: UpdateTaskDto) {
+    return await this.taskService.update(data, parseInt(id));
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return await this.taskService.delete(parseInt(id));
   }
 }

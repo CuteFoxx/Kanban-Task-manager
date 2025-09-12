@@ -26,11 +26,14 @@ const HideSideBar = ({ className, ...props }: HideSideBarProps) => {
       onClick={handleClick}
       className={cn(
         className,
-        "!text-medium-grey text-heading-m hidden transition-all md:flex md:items-center md:gap-2.5",
+        "!text-medium-grey text-heading-m hidden cursor-pointer transition-all md:flex md:items-center md:gap-2.5",
         [
           isSideBarMinimized &&
             !isMobile &&
             "bg-main fixed bottom-8 left-0 flex min-h-12 min-w-14 justify-center rounded-r-full text-[0px] !opacity-100",
+        ],
+        [
+          "w-full md:-ml-6 md:max-w-[17.375rem] md:rounded-r-full md:py-3.5 md:!pl-6 md:hover:bg-white",
         ],
       )}
     >

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   Controller,
   useFieldArray,
@@ -17,6 +17,7 @@ import Select, { type Option } from "../form/Select";
 import { useAppSelector } from "../../redux/hooks";
 import RemoveIcon from "../../assets/icon-cross.svg?react";
 import axios from "axios";
+import { TasksContext } from "../../App";
 
 const schema = z.object({
   title: z.string().min(3, { message: "min 3 chars long" }),
@@ -39,6 +40,7 @@ const TaskForm = ({
   action?: "POST" | "UPDATE";
 }) => {
   const [options, setOptions] = useState<Option[]>();
+  const { tasks, setTasks } = useContext(TasksContext);
 
   const {
     register,
@@ -65,7 +67,8 @@ const TaskForm = ({
         axios
           .post("task", { ...data, columnId: parseInt(data.status) })
           .then((res) => {
-            if (res.data != null) {
+            if (tasks != null) {
+              setTasks([...tasks, res.data]);
               reset();
             }
           });

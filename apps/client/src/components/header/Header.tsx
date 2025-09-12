@@ -53,7 +53,7 @@ const Header = () => {
               onClick={() => setIsEditBoardOpen(!isEditBoardOpen)}
               className="text-medium text-medium-grey cursor-pointer"
             >
-              Edit
+              Edit Board
             </button>
             <button
               onClick={() => {
@@ -61,7 +61,7 @@ const Header = () => {
               }}
               className="text-red text-medium cursor-pointer"
             >
-              Delete
+              Delete Board
             </button>
           </OptionsModalContent>
         </div>

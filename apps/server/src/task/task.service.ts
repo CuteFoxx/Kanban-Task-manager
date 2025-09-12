@@ -77,4 +77,14 @@ export class TaskService {
     });
     return tasks;
   }
+
+  async delete(id: number) {
+    const task = await this.taskRepo.findOneBy({ id });
+
+    if (!task) {
+      throw new NotFoundException('task not found');
+    }
+
+    return this.taskRepo.remove(task);
+  }
 }

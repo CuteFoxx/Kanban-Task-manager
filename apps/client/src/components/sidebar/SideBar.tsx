@@ -32,7 +32,7 @@ const SideBar = () => {
         <BoardsList />
         <div className="hide-sidebar">
           {!isSideBarMinimized && <ThemeSwitch />}
-          <HideSideBar className="md:mt-7.5 md:pl-2.75" />
+          <HideSideBar className="md:mt-2 md:pl-2.75" />
         </div>
       </div>
     </div>

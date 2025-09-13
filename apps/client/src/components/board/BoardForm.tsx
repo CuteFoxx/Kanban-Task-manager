@@ -15,6 +15,7 @@ const schema = z.object({
   name: z.string().min(3, { message: "min 3 chars long" }),
   columns: z.array(
     z.object({
+      id: z.number().optional(),
       name: z.string().min(3, { message: "min 3 chars long" }),
     }),
   ),
@@ -64,11 +65,12 @@ const BoardForm = ({
         });
         break;
       case "UPDATE":
+        console.log(data);
+
         axios.patch(`board/${currentBoard?.id ?? -1}`, data).then((res) => {
-          if (res.data != null) {
-            dispatch(setCurrentBoard(res.data));
-            reset();
-          }
+          console.log(res.data);
+          dispatch(setCurrentBoard(res.data));
+          reset();
         });
         break;
     }

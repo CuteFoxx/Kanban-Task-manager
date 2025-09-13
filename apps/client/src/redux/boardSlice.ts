@@ -1,12 +1,12 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Board } from "../types/board";
 
-interface UserState {
+interface BoardState {
   boards: Board[] | [];
   currentBoard: Board | null;
 }
 
-const initialState: UserState = {
+const initialState: BoardState = {
   boards: [],
   currentBoard: null,
 };

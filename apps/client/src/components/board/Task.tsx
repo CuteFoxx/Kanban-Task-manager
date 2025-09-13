@@ -3,23 +3,26 @@ import type { Task as TaskType } from "../../types/task";
 import { Modal, ModalContent, ModalTitle, ModalTrigger } from "../Modal";
 import Checkbox from "../form/Checkbox";
 import type { SubTask } from "../../types/subtask";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Select, { type Option } from "../form/Select";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import OptionsModal from "../OptionsModal";
 import DeleteTaskModal from "./DeleteTaskModal";
-import { TasksContext } from "../../App";
+import { setTasks } from "../../redux/tasksSlice";
+import TaskForm from "./TaskForm";
 
 const Task = ({ task }: { task: TaskType }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: task.id,
   });
-  const { tasks, setTasks } = useContext(TasksContext);
   const currentBoard = useAppSelector((root) => root.board.currentBoard);
   const [options, setOptions] = useState<Option[]>();
   const [isDeleteTaskModalOpen, setIsDeleteTaskModalOpen] = useState(false);
+  const [isUpdateTaskModalOpen, setIsUpdateTaskModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const tasks = useAppSelector((root) => root.tasks.value);
+  const dispatch = useAppDispatch();
 
   const style =
     transform != null
@@ -33,8 +36,8 @@ const Task = ({ task }: { task: TaskType }) => {
   const handleSubTaskCLick = (subtask: SubTask) => {
     subtask.completed = !subtask.completed;
 
-    if (tasks != null && setTasks != null) {
-      setTasks([...tasks.filter((item) => item.id != task.id), task]);
+    if (tasks != null) {
+      dispatch(setTasks([...tasks.filter((item) => item.id != task.id), task]));
       axios.patch(`/subtask/${subtask.id}`, subtask);
     }
   };
@@ -43,7 +46,7 @@ const Task = ({ task }: { task: TaskType }) => {
     task.columnId = newColumndId;
     axios.patch(`/task/${task.id}`, task);
     if (tasks != null) {
-      setTasks([...tasks.filter((item) => item.id != task.id), task]);
+      dispatch(setTasks([...tasks.filter((item) => item.id != task.id), task]));
     }
   };
 
@@ -60,6 +63,7 @@ const Task = ({ task }: { task: TaskType }) => {
   return (
     <>
       <Modal
+        className="mb-5 last:mb-0"
         controls={{
           isOpen,
           setIsOpen,
@@ -92,7 +96,13 @@ const Task = ({ task }: { task: TaskType }) => {
           <ModalTitle className="flex items-center justify-between">
             {task.title}
             <OptionsModal>
-              <button className="text-medium-grey cursor-pointer">
+              <button
+                onClick={() => {
+                  setIsUpdateTaskModalOpen((prev) => !prev);
+                  setIsOpen(false);
+                }}
+                className="text-medium-grey cursor-pointer"
+              >
                 Edit task
               </button>
               <button
@@ -161,6 +171,27 @@ const Task = ({ task }: { task: TaskType }) => {
           setIsOpen={setIsDeleteTaskModalOpen}
           task={task}
         />
+      )}
+      {isUpdateTaskModalOpen && (
+        <Modal
+          controls={{
+            isOpen: isUpdateTaskModalOpen,
+            setIsOpen: setIsUpdateTaskModalOpen,
+          }}
+        >
+          <ModalContent>
+            <TaskForm
+              action="UPDATE"
+              defaultValues={{
+                title: task.title,
+                description: task?.description ?? "",
+                subtasks: task.subTasks,
+                status: String(task.columnId),
+              }}
+              taskId={task.id}
+            />
+          </ModalContent>
+        </Modal>
       )}
     </>
   );

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Controller,
   useFieldArray,
@@ -14,10 +14,10 @@ import Button from "../form/Button";
 import TextArea from "../form/TextArea";
 import FormError from "../form/FormError";
 import Select, { type Option } from "../form/Select";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import RemoveIcon from "../../assets/icon-cross.svg?react";
 import axios from "axios";
-import { TasksContext } from "../../App";
+import { setTasks } from "../../redux/tasksSlice";
 
 const schema = z.object({
   title: z.string().min(3, { message: "min 3 chars long" }),
@@ -35,12 +35,16 @@ type FormFileds = z.infer<typeof schema>;
 const TaskForm = ({
   defaultValues,
   action = "POST",
+  taskId = -1,
 }: {
   defaultValues?: FormFileds;
   action?: "POST" | "UPDATE";
+  taskId?: number;
 }) => {
   const [options, setOptions] = useState<Option[]>();
-  const { tasks, setTasks } = useContext(TasksContext);
+  const tasks = useAppSelector((root) => root.tasks.value);
+  const dispatch = useAppDispatch();
+  const currentBoard = useAppSelector((root) => root.board.currentBoard);
 
   const {
     register,
@@ -48,37 +52,20 @@ const TaskForm = ({
     formState: { errors },
     reset,
     control,
+    getValues,
   } = useForm<FormFileds>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      status: options?.[0]?.value ?? "",
-      subtasks: [
-        {
-          name: "",
-        },
-      ],
-    },
-  });
-  const currentBoard = useAppSelector((root) => root.board.currentBoard);
-  const formRef = useRef(null);
-  const onSubmit: SubmitHandler<FormFileds> = (data) => {
-    switch (action) {
-      case "POST":
-        axios
-          .post("task", { ...data, columnId: parseInt(data.status) })
-          .then((res) => {
-            if (tasks != null) {
-              setTasks([...tasks, res.data]);
-              reset();
-            }
-          });
-        break;
-    }
-  };
-
-  const { fields, append, remove } = useFieldArray({
-    name: "subtasks",
-    control: control,
+    defaultValues:
+      defaultValues != null
+        ? defaultValues
+        : {
+            status: options?.[0].value ?? "",
+            subtasks: [
+              {
+                name: "",
+              },
+            ],
+          },
   });
 
   useEffect(() => {
@@ -87,9 +74,41 @@ const TaskForm = ({
         currentBoard.columns?.map((item) => {
           return { label: item.name, value: String(item.id) };
         });
+      reset({
+        ...getValues(),
+        status: options[0].value,
+      });
       setOptions(options);
     }
-  }, [currentBoard]);
+  }, [currentBoard, reset]);
+
+  const onSubmit: SubmitHandler<FormFileds> = (data) => {
+    switch (action) {
+      case "POST":
+        axios
+          .post("task", { ...data, columnId: parseInt(data.status) })
+          .then((res) => {
+            if (tasks != null) {
+              dispatch(setTasks([...tasks, res.data]));
+              reset();
+            }
+          });
+        break;
+      case "UPDATE":
+        axios.patch(`task/${taskId}`, data).then((res) => {
+          if (tasks != null) {
+            const filtered = tasks.filter((task) => task.id != res.data.id);
+            dispatch(setTasks([...filtered, res.data]));
+          }
+        });
+        break;
+    }
+  };
+
+  const { fields, append, remove } = useFieldArray({
+    name: "subtasks",
+    control: control,
+  });
 
   return (
     <form
@@ -167,7 +186,7 @@ a little.`}
           />
         )}
       </FormItem>
-      <Button>Create Task</Button>
+      <Button>{action == "POST" ? "Create Task" : "Save changes"}</Button>
     </form>
   );
 };

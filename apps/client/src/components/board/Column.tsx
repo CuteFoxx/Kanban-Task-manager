@@ -1,15 +1,15 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { type Column as ColumnType } from "../../types/column";
 import type { Task as TaskType } from "../../types/task";
 import Task from "./Task";
 import { useDroppable } from "@dnd-kit/core";
-import { TasksContext } from "../../App";
+import { useAppSelector } from "../../redux/hooks";
 export const TaskContext = createContext<TaskType | null>({} as TaskType);
 
 const Column = ({ column }: { column: ColumnType }) => {
   const [filteredTasks, setFilteredTasks] = useState<TaskType[] | null>(null);
   const { setNodeRef } = useDroppable({ id: column.id });
-  const { tasks } = useContext(TasksContext);
+  const tasks = useAppSelector((root) => root.tasks.value);
 
   useEffect(() => {
     const filtered = tasks?.filter((task) => task.columnId === column.id);
@@ -29,7 +29,7 @@ const Column = ({ column }: { column: ColumnType }) => {
         {column.name}
         <span>({tasks?.length})</span>
       </h3>
-      <div className="flex flex-col gap-5">
+      <div className="">
         {filteredTasks?.map((task) => (
           <Task key={task.id} task={task} />
         ))}

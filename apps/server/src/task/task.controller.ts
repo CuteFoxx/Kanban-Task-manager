@@ -25,6 +25,7 @@ export class TaskController {
   }
 
   @Get(':id')
+  @Serialize(TaskDto)
   get(@Param('id') id: string) {
     return this.taskService.findOne(parseInt(id));
   }
@@ -45,6 +46,7 @@ export class TaskController {
   }
 
   @Patch(':id')
+  @Serialize(TaskDto)
   async update(@Param('id') id: string, @Body() data: UpdateTaskDto) {
     return await this.taskService.update(data, parseInt(id));
   }

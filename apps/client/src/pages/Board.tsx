@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  type Dispatch,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setCurrentBoard } from "../redux/boardSlice";
@@ -21,7 +14,7 @@ import {
   ModalTrigger,
 } from "../components/Modal";
 import AddColumnForm from "../components/board/AddColumnForm";
-import { TasksContext } from "../App";
+import { setTasks } from "../redux/tasksSlice";
 
 const Board = () => {
   const dispatch = useAppDispatch();
@@ -30,7 +23,7 @@ const Board = () => {
   const [isAddColumnOpen, setIsAddColumnOpen] = useState(false);
   const tirggerButtonRef = useRef(null);
   const { id } = useParams();
-  const { tasks, setTasks } = useContext(TasksContext);
+  const tasks = useAppSelector((root) => root.tasks.value);
 
   useEffect(() => {
     if (currentBoard?.id != null) {
@@ -42,7 +35,7 @@ const Board = () => {
         })
         .then((res) => {
           if (res.data) {
-            setTasks(res.data);
+            dispatch(setTasks(res.data));
           }
         });
     }
@@ -82,14 +75,8 @@ const Board = () => {
     } as Partial<Task>);
 
     if (tasks != null) {
-      const updatedTasks = tasks.map((task) => {
-        if (task.id != taskId) {
-          return task;
-        }
-        return Object.assign(task, { ...task, columnId: newStatus });
-      });
-
-      setTasks(updatedTasks);
+      const updatedTasks = tasks.filter((task) => taskId != task.id);
+      dispatch(setTasks([...updatedTasks, { ...task, columnId: newStatus }]));
     }
   };
 

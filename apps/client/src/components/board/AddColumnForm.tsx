@@ -1,5 +1,4 @@
 import z from "zod";
-import type { Board } from "../../types/board";
 import Button from "../form/Button";
 import FormError from "../form/FormError";
 import FormItem from "../form/FormItem";

@@ -66,16 +66,25 @@ const Header = () => {
           </OptionsModalContent>
         </div>
       </header>
-      <DeleteBoardModal
-        setIsOpen={setIsDeleteBoardOpen}
-        isOpen={isDeleteBoardOpen}
-      />
-      <EditBoardModal isOpen={isEditBoardOpen} setIsOpen={setIsEditBoardOpen} />
-      <AddTaskModal
-        triggerElement={addTaskRef}
-        isOpen={isAddTaskOpen}
-        setIsOpen={setIsAddTaskOpen}
-      />
+      {isDeleteBoardOpen && (
+        <DeleteBoardModal
+          setIsOpen={setIsDeleteBoardOpen}
+          isOpen={isDeleteBoardOpen}
+        />
+      )}
+      {isEditBoardOpen && (
+        <EditBoardModal
+          isOpen={isEditBoardOpen}
+          setIsOpen={setIsEditBoardOpen}
+        />
+      )}
+      {isAddTaskOpen && (
+        <AddTaskModal
+          triggerElement={addTaskRef}
+          isOpen={isAddTaskOpen}
+          setIsOpen={setIsAddTaskOpen}
+        />
+      )}
     </>
   );
 };

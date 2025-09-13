@@ -1,9 +1,10 @@
-import { useContext, type SetStateAction } from "react";
+import { type SetStateAction } from "react";
 import type { Task } from "../../types/task";
 import { Modal, ModalContent, ModalTitle } from "../Modal";
 import Button from "../form/Button";
 import axios from "axios";
-import { TasksContext } from "../../App";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setTasks } from "../../redux/tasksSlice";
 
 const DeleteTaskModal = ({
   isOpen,
@@ -14,14 +15,15 @@ const DeleteTaskModal = ({
   setIsOpen: React.Dispatch<SetStateAction<boolean>>;
   task: Task;
 }) => {
-  const { tasks, setTasks } = useContext(TasksContext);
+  const tasks = useAppSelector((root) => root.tasks.value);
+  const dispatch = useAppDispatch();
 
   const handleDelete = () => {
     axios.delete(`task/${task.id}`).then((res) => {
       const data: Task | null = res.data;
 
       if (data && tasks) {
-        setTasks(tasks.filter((item) => item.id !== task.id));
+        dispatch(setTasks(tasks.filter((item) => item.id !== task.id)));
       }
     });
   };

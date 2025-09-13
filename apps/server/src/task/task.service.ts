@@ -44,7 +44,13 @@ export class TaskService {
   }
 
   async update(data: UpdateTaskDto, id: number) {
-    const task = await this.taskRepo.findOneBy({ id });
+    const task = await this.taskRepo.findOne({
+      where: { id },
+      relations: {
+        column: true,
+        subTasks: true,
+      },
+    });
 
     if (!task) {
       throw new NotFoundException('Task not found');

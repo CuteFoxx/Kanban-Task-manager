@@ -18,12 +18,12 @@ const Logo = ({ className }: { className?: string }) => {
 
   return (
     <div className={className}>
-      {isMobile != null ? (
+      {isMobile ? (
         <LogoMobile />
-      ) : theme === "dark" ? (
-        <LightLogo />
-      ) : (
+      ) : theme === "light" ? (
         <DarkLogo />
+      ) : (
+        <LightLogo />
       )}
     </div>
   );

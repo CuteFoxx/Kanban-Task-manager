@@ -33,13 +33,26 @@ const Task = ({ task }: { task: TaskType }) => {
     (task) => task.completed,
   )?.length;
 
-  const handleSubTaskCLick = (subtask: SubTask) => {
-    subtask.completed = !subtask.completed;
+  const handleSubTaskCLick = (clickedSubtask: SubTask) => {
+    if (!tasks) return;
 
-    if (tasks != null) {
-      dispatch(setTasks([...tasks.filter((item) => item.id != task.id), task]));
-      axios.patch(`/subtask/${subtask.id}`, subtask);
-    }
+    const updatedTasks = tasks.map((taskItem) => {
+      if (taskItem.id !== task.id) return taskItem;
+
+      const updatedSubTasks = taskItem.subTasks.map((subTask) =>
+        subTask.id === clickedSubtask.id
+          ? { ...subTask, completed: !subTask.completed }
+          : subTask,
+      );
+
+      return { ...taskItem, subTasks: updatedSubTasks };
+    });
+
+    dispatch(setTasks(updatedTasks));
+
+    axios.patch(`/subtask/${clickedSubtask.id}`, {
+      completed: !clickedSubtask.completed,
+    });
   };
 
   const handleTaskColumnUpdate = (newColumndId: number) => {

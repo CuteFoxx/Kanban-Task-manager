@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { Column } from 'src/column/column.entity';
 import { UpdateTaskDto } from './dtos/update-task.dto';
+import { Subtask } from 'src/subtask/subtask.entity';
 @Injectable()
 export class TaskService {
   constructor(
@@ -57,6 +58,12 @@ export class TaskService {
     }
 
     Object.assign(task, data);
+
+    if ((data.subtasks as Subtask[]) && data.subtasks != null) {
+      task.subTasks = data.subtasks.map((st) =>
+        Object.assign(new Subtask(), st),
+      );
+    }
 
     if (data.columnId) {
       task.column = { id: data.columnId } as Column;

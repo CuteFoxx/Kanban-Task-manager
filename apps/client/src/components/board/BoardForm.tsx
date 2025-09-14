@@ -65,10 +65,7 @@ const BoardForm = ({
         });
         break;
       case "UPDATE":
-        console.log(data);
-
         axios.patch(`board/${currentBoard?.id ?? -1}`, data).then((res) => {
-          console.log(res.data);
           dispatch(setCurrentBoard(res.data));
           reset();
         });

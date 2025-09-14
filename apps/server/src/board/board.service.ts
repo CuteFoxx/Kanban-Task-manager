@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
 import { CreateBoardDto } from './dtos/create-board.dto';
-import { Column, In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Column as ColumnEntity } from 'src/column/column.entity';
 import { ColumnService } from 'src/column/column.service';
 

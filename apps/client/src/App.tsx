@@ -3,21 +3,28 @@ import Header from "./components/header/Header";
 import SideBar from "./components/sidebar/SideBar";
 import { useEffect } from "react";
 import axios from "axios";
-import { useAppDispatch } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { setBoards } from "./redux/boardSlice";
+import { cn } from "./utils/utils";
 
 function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     axios.get("board").then((res) => dispatch(setBoards(res.data ?? [])));
   }, []);
+  const isSideBarShown = useAppSelector((root) => root.app.isSideBarShown);
 
   return (
     <>
       <Header />
-      <main className="relative h-full flex-1 md:flex">
+      <main className="relative h-full flex-1 overflow-x-auto md:flex">
         <SideBar />
-        <div className="flex-1 px-4 py-6 md:px-6">
+        <div
+          className={cn(
+            "min-h-[calc(100dvh-var(--spacing)*20)] flex-1 px-4 py-6 pt-20 md:min-h-[calc(100dvh-var(--spacing)*31)] md:px-6 md:pt-31 md:pl-71",
+            isSideBarShown && "overflow-hidden",
+          )}
+        >
           <Outlet />
         </div>
       </main>

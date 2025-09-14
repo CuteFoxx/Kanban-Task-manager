@@ -8,14 +8,22 @@ const Logo = ({ className }: { className?: string }) => {
   const isMobile = useIsMobile();
   const theme = useAppSelector((state) => state.app.theme);
 
+  if (theme == null) {
+    return (
+      <div className={className}>
+        <DarkLogo />
+      </div>
+    );
+  }
+
   return (
     <div className={className}>
-      {isMobile ? (
+      {isMobile != null ? (
         <LogoMobile />
-      ) : theme === "light" ? (
-        <DarkLogo />
-      ) : (
+      ) : theme === "dark" ? (
         <LightLogo />
+      ) : (
+        <DarkLogo />
       )}
     </div>
   );

@@ -21,7 +21,10 @@ const ThemeSwitch = ({ className }: { className?: string }) => {
   };
 
   return (
-    <div className="bg-background-darkest dark:bg-background-darkest-dark flex min-w-[14.6875rem] items-center justify-center gap-6 rounded-[0.375rem] py-[0.875rem]">
+    <div
+      className="bg-background-darkest dark:bg-background-darkest-dark flex min-w-[14.6875rem] items-center justify-center gap-6 rounded-[0.375rem] py-[0.875rem]"
+      data-ignore-outside
+    >
       <Sun />
       <label
         className="bg-main relative flex min-h-5 w-10 gap-2 rounded-[0.75rem] text-[0px] [--item-size:0.875rem] before:absolute before:top-1/2 before:left-1 before:h-[var(--item-size)] before:w-[var(--item-size)] before:-translate-y-1/2 before:rounded-full before:bg-white before:transition-all before:content-[''] has-[input:checked]:before:left-[calc(100%-var(--item-size)-var(--spacing))]"

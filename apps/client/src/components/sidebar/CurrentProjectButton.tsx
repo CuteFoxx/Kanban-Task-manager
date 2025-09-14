@@ -25,7 +25,9 @@ function CurrentProjectButton({
       className={cn("!flex cursor-pointer items-center gap-2", className)}
       onClick={handleClick}
     >
-      <h2>{currentProject?.name ?? "Board not selected"}</h2>
+      <h2 className="max-w-40 truncate whitespace-nowrap">
+        {currentProject?.name ?? "Board not selected"}
+      </h2>
       <ArrowDown />
     </button>
   );

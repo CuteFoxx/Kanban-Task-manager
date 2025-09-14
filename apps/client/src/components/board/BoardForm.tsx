@@ -83,7 +83,11 @@ const BoardForm = ({
   }, [defaultValues, reset]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="w-full"
+      data-ignore-outside
+    >
       <FormItem>
         <Label>Board Name</Label>
         <Input

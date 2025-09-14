@@ -50,7 +50,7 @@ export const Modal = ({
     setIsOpen: controls?.setIsOpen ?? setIsOpen,
   };
 
-  const handleClickOutside = (e: PointerEvent) => {
+  const handleClickOutside = (e: MouseEvent) => {
     const target = e.target as Element;
 
     if (target.closest("[data-ignore-outside]")) {

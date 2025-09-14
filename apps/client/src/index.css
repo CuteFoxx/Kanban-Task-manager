@@ -64,5 +64,9 @@ body {
   @apply bg-background dark:bg-background-dark flex min-h-[100svh] flex-col text-black dark:text-white;
 }
 
+html {
+  overflow-x: clip;
+}
+
 .modal {
 }

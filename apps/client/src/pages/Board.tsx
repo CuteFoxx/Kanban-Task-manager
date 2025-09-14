@@ -15,6 +15,7 @@ import {
 } from "../components/Modal";
 import AddColumnForm from "../components/board/AddColumnForm";
 import { setTasks } from "../redux/tasksSlice";
+import { cn } from "../utils/utils";
 
 const Board = () => {
   const dispatch = useAppDispatch();
@@ -86,7 +87,11 @@ const Board = () => {
   ) {
     return (
       <>
-        <div className="flex h-full w-full flex-col items-center justify-center">
+        <div
+          className={cn(
+            "flex h-full w-full flex-col items-center justify-center",
+          )}
+        >
           <h2 className="text-medium-grey text-heading-l px-40 text-center">
             This board is empty. Create a new column to get started.
           </h2>

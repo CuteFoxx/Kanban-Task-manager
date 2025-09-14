@@ -3,13 +3,14 @@ import { cn } from "../../utils/utils";
 import OptionsModalContent from "../OptionsModal";
 import ActiveBoard from "../sidebar/ActiveBoard";
 import Logo from "./Logo";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DeleteBoardModal from "./DeleteBoardModal";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import EditBoardModal from "./EditBoardModal";
 import Button from "../form/Button";
 import AddIcon from "../../assets/icon-add-task-mobile.svg?react";
 import AddTaskModal from "./AddTaskModal";
+import { setIsSideBarShown } from "../../redux/appStateSlice";
 
 const Header = () => {
   const isMobile = useIsMobile();
@@ -21,11 +22,32 @@ const Header = () => {
   const [isAddTaskOpen, setIsAddTaskOpen] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
   const addTaskRef = useRef<HTMLButtonElement>(null);
+  const headerRef = useRef<HTMLHeadElement>(null);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Element;
+      if (!headerRef.current?.contains(target as Element)) {
+        if (target.closest("[data-ignore-outside]")) {
+          return;
+        }
+
+        dispatch(setIsSideBarShown(false));
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   return (
     <>
-      <header className="relative z-20 flex min-h-16 items-center gap-4 overflow-x-clip px-4 py-5 md:min-h-20.25 md:gap-0 md:!p-0 md:[&>*]:px-6 md:[&>*]:py-7">
-        <Logo className="md:border-lines-light dark:md:border-lines-dark md:min-w-[16.25rem] md:border-r" />
+      <header
+        ref={headerRef}
+        className="dark:bg-dark-grey fixed top-0 left-0 z-90 flex min-h-16 min-w-screen items-center gap-4 overflow-x-clip bg-white px-4 py-5 md:min-h-20.25 md:gap-0 md:!p-0 md:[&>*]:px-6 md:[&>*]:py-7"
+      >
+        <Logo className="md:border-lines-light dark:md:border-lines-dark md:min-h-25 md:min-w-[16.25rem] md:border-r" />
         <div
           className={cn(
             "relative flex w-full items-center gap-6 transition-all",

@@ -28,7 +28,7 @@ const BoardsList = () => {
       <Modal>
         <ModalTrigger className="!text-main text-heading-m [&_path]:fill-main hover:bg-lavander/20 -ml-6.5 flex items-center gap-3 rounded-r-full py-4 pl-6 dark:hover:bg-white">
           <LinkIcon />
-          <span>+ Create New Board</span>
+          <span data-ignore-outside>+ Create New Board</span>
         </ModalTrigger>
         <ModalContent>
           <ModalTitle>Add New Board</ModalTitle>

@@ -22,7 +22,7 @@ const OptionsModal = forwardRef<HTMLDivElement, OptionsModalProps>(
       useImperativeHandle(ref, () => wrapperRef.current!);
     }
 
-    const handleClickOutside = (e: PointerEvent) => {
+    const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
 
       if (!wrapperRef.current?.contains(target)) {

@@ -27,7 +27,7 @@ const Column = ({ column }: { column: ColumnType }) => {
     >
       <h3 className="text-heading-s text-medium-grey mb-6 flex gap-3 uppercase before:block before:h-3.75 before:w-3.75 before:rounded-full before:bg-[#49C4E5] before:content-['']">
         {column.name}
-        <span>({tasks?.length})</span>
+        <span>({column?.tasks?.length})</span>
       </h3>
       <div className="">
         {filteredTasks?.map((task) => (

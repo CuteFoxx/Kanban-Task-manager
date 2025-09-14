@@ -23,6 +23,13 @@ export class TaskService {
     if (!column) {
       throw new NotFoundException('column not found');
     }
+
+    if ((data.subtasks as Subtask[]) && data.subtasks != null) {
+      task.subTasks = data.subtasks.map((st) =>
+        Object.assign(new Subtask(), st),
+      );
+    }
+
     task.column = column;
     return await this.taskRepo.save(task);
   }

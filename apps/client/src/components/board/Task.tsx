@@ -56,10 +56,14 @@ const Task = ({ task }: { task: TaskType }) => {
   };
 
   const handleTaskColumnUpdate = (newColumndId: number) => {
-    task.columnId = newColumndId;
-    axios.patch(`/task/${task.id}`, task);
+    axios.patch(`/task/${task.id}`, { ...task, columnId: newColumndId });
     if (tasks != null) {
-      dispatch(setTasks([...tasks.filter((item) => item.id != task.id), task]));
+      dispatch(
+        setTasks([
+          ...tasks.filter((item) => item.id != task.id),
+          { ...task, columnId: newColumndId },
+        ]),
+      );
     }
   };
 

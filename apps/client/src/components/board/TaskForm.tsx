@@ -95,12 +95,16 @@ const TaskForm = ({
           });
         break;
       case "UPDATE":
-        axios.patch(`task/${taskId}`, data).then((res) => {
-          if (tasks != null) {
-            const filtered = tasks.filter((task) => task.id != res.data.id);
-            dispatch(setTasks([...filtered, res.data]));
-          }
-        });
+        console.log(data);
+
+        axios
+          .patch(`task/${taskId}`, { ...data, columnId: data.status })
+          .then((res) => {
+            if (tasks != null) {
+              const filtered = tasks.filter((task) => task.id != res.data.id);
+              dispatch(setTasks([...filtered, res.data]));
+            }
+          });
         break;
     }
   };

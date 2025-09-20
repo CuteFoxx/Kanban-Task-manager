@@ -45,7 +45,7 @@ const Header = () => {
     <>
       <header
         ref={headerRef}
-        className="dark:bg-dark-grey fixed top-0 left-0 z-90 flex min-h-16 min-w-screen items-center gap-4 overflow-x-clip bg-white px-4 py-5 md:min-h-20.25 md:gap-0 md:!p-0 md:[&>*]:px-6 md:[&>*]:py-7"
+        className="dark:bg-dark-grey fixed top-0 left-0 z-20 flex min-h-16 min-w-screen items-center gap-4 overflow-x-clip bg-white px-4 py-5 md:min-h-20.25 md:gap-0 md:!p-0 md:[&>*]:px-6 md:[&>*]:py-7"
       >
         <Logo className="md:border-lines-light dark:md:border-lines-dark md:min-h-25 md:min-w-[16.25rem] md:border-r" />
         <div

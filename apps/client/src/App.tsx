@@ -17,7 +17,9 @@ function App() {
     });
   }, []);
   const isSideBarShown = useAppSelector((root) => root.app.isSideBarShown);
-
+  const isSideBarMinimized = useAppSelector(
+    (root) => root.app.isSideBarMinimized,
+  );
   return (
     <>
       <Header />
@@ -25,8 +27,9 @@ function App() {
         <SideBar />
         <div
           className={cn(
-            "min-h-[calc(100dvh-var(--spacing)*20)] flex-1 px-4 py-6 pt-20 md:min-h-[calc(100dvh-var(--spacing)*31)] md:px-6 md:pt-31 md:pl-71",
+            "min-h-[calc(100dvh-var(--spacing)*20)] flex-1 px-4 py-6 pt-20 transition-all md:min-h-[calc(100dvh-var(--spacing)*31)] md:px-6 md:pt-31 md:pl-71",
             isSideBarShown && "overflow-hidden",
+            isSideBarMinimized && "!pl-6",
           )}
         >
           <Outlet />

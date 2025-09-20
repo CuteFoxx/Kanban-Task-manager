@@ -10,7 +10,11 @@ import { cn } from "./utils/utils";
 function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    axios.get("board").then((res) => dispatch(setBoards(res.data ?? [])));
+    axios.get("board").then((res) => {
+      if (Array.isArray(res.data)) {
+        dispatch(setBoards(res.data ?? []));
+      }
+    });
   }, []);
   const isSideBarShown = useAppSelector((root) => root.app.isSideBarShown);
 

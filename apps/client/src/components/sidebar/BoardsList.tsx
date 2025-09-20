@@ -5,7 +5,8 @@ import { Modal, ModalContent, ModalTitle, ModalTrigger } from "../Modal";
 import CreateBoardForm from "../board/BoardForm";
 
 const BoardsList = () => {
-  const boards = useAppSelector((root) => root.board.boards);
+  const boards = useAppSelector((root) => root.board.boards) ?? [];
+
   return (
     <section className="flex flex-col">
       {boards && (

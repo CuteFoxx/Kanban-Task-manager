@@ -70,10 +70,21 @@ const Board = () => {
       .get(`task/${taskId}`)
       .then((res) => res.data as Task);
 
-    axios.patch(`task/${taskId}`, {
-      ...task,
-      columnId: newStatus,
-    } as Partial<Task>);
+    axios
+      .patch(`task/${taskId}`, {
+        ...task,
+        columnId: newStatus,
+      } as Partial<Task>)
+      .then((res) => {
+        const updatedTasks = tasks.map((item) => {
+          if (item.id != res.data.id) {
+            return item;
+          } else {
+            return res.data;
+          }
+        });
+        dispatch(setTasks(updatedTasks));
+      });
 
     if (tasks != null) {
       const updatedTasks = tasks.filter((task) => taskId != task.id);

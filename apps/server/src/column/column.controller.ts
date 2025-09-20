@@ -7,7 +7,7 @@ export class ColumnController {
   constructor(private columnService: ColumnService) {}
 
   @Post()
-  create(@Body() data: CreateColumnDto) {
-    return this.columnService.create(data);
+  async create(@Body() data: CreateColumnDto) {
+    return await this.columnService.create(data);
   }
 }

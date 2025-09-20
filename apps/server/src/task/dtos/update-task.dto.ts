@@ -7,7 +7,6 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { UpdateSubTaskDto } from 'src/subtask/dtos/update-subtask.dto';
-import { Subtask } from 'src/subtask/subtask.entity';
 
 export class UpdateTaskDto {
   @IsString()

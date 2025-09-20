@@ -14,7 +14,7 @@ export class TaskDto {
   description: string;
 
   @Expose()
-  @Transform(({ obj }: { obj: { column: Column } }) => obj.column.id)
+  @Transform(({ obj }: { obj: { column?: Column } }) => obj.column?.id ?? null)
   columnId: number;
 
   @Expose()

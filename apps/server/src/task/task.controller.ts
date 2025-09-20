@@ -20,14 +20,14 @@ export class TaskController {
   constructor(private taskService: TaskService) {}
   @Post()
   @Serialize(TaskDto)
-  create(@Body() data: CreateTaskDto) {
-    return this.taskService.create(data);
+  async create(@Body() data: CreateTaskDto) {
+    return await this.taskService.create(data);
   }
 
   @Get(':id')
   @Serialize(TaskDto)
-  get(@Param('id') id: string) {
-    return this.taskService.findOne(parseInt(id));
+  async get(@Param('id') id: string) {
+    return await this.taskService.findOne(parseInt(id));
   }
 
   @Get()

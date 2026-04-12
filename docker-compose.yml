@@ -8,6 +8,8 @@ services:
       PORT: 3000
       DATABASE_PATH: /app/data/db.sqlite
       ORIGIN: ${FRONTEND_URL:-http://localhost}
+    expose:
+      - "3000"
     volumes:
       - db_data:/app/data
     networks:

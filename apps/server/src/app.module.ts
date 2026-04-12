@@ -15,7 +15,7 @@ import { Subtask } from './subtask/subtask.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'db.sqlite',
+      database: process.env.DATABASE_PATH ?? 'db.sqlite',
       entities: [Board, Column, Task, Subtask],
       synchronize: true,
     }),

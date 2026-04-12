@@ -1,0 +1,45 @@
+services:
+  backend:
+    build:
+      context: ./apps/server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: 3000
+      DATABASE_PATH: /app/data/db.sqlite
+      # Set to your frontend origin to allow CORS, e.g. http://localhost:80
+      ORIGIN: ${FRONTEND_URL:-http://localhost}
+    volumes:
+      - db_data:/app/data
+    networks:
+      - internal
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+
+  frontend:
+    build:
+      context: ./apps/client
+      dockerfile: Dockerfile
+      args:
+        # Points the built JS bundle at the backend
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    networks:
+      - internal
+    depends_on:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 50M
+
+volumes:
+  db_data:
+
+networks:
+  internal:
+    driver: bridge

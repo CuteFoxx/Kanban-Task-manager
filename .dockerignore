@@ -1,0 +1,8 @@
+**/node_modules
+**/dist
+**/.git
+apps/server/db.sqlite
+**/*.spec.ts
+**/coverage
+**/*.local
+**/.env

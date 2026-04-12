@@ -1,19 +1,22 @@
-# Stage 1: compile native deps (sqlite3 needs python/make/g++)
+# Build context must be the repo root (docker compose sets this automatically)
+
+# Stage 1: compile native deps (sqlite3 requires python/make/g++ on Alpine)
 FROM node:22-alpine AS deps
 RUN apk add --no-cache python3 make g++
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+COPY package.json package-lock.json ./
+COPY apps/server/package.json ./apps/server/
+RUN npm ci -w apps/server
 
-# Stage 2: build TS → JS, then prune dev deps
+# Stage 2: build TS → JS, then drop dev deps
 FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-RUN npm run build \
+COPY apps/server ./apps/server
+RUN npm run build -w apps/server \
  && npm prune --omit=dev
 
-# Stage 3: minimal runtime image
+# Stage 3: minimal runtime
 FROM node:22-alpine AS runner
 ENV NODE_ENV=production \
     PORT=3000 \
@@ -24,11 +27,9 @@ RUN addgroup -S app && adduser -S app -G app \
  && mkdir -p /app/data && chown -R app:app /app
 
 COPY --from=builder --chown=app:app /app/node_modules ./node_modules
-COPY --from=builder --chown=app:app /app/dist ./dist
+COPY --from=builder --chown=app:app /app/apps/server/dist ./dist
 
 USER app
 VOLUME ["/app/data"]
 EXPOSE 3000
-
-# cap Node.js heap at 256 MB to keep RAM usage low
 CMD ["node", "--max-old-space-size=256", "dist/main"]

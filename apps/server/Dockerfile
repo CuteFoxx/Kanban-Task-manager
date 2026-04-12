@@ -12,6 +12,8 @@ RUN npm ci -w apps/server
 FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
+# root package.json is required so npm understands the workspace structure
+COPY package.json package-lock.json ./
 COPY apps/server ./apps/server
 RUN npm run build -w apps/server \
  && npm prune --omit=dev
